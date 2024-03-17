@@ -68,7 +68,7 @@ class StudentManager {
     }
 }
 
-public class p {
+public class StudentManger {
     public static void main(String[] args) {
         StudentManager studentManager = new StudentManager();
         Scanner scanner = new Scanner(System.in);
