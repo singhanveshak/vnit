@@ -54,7 +54,7 @@ void FILEWRITER()
 {
 
     /*WRITING BOOKS*/
-    FILE *file = fopen("DATABASE/BOOKS.dat", "wb");
+    FILE *file = fopen("../DATABASE/BOOKS.dat", "wb");
     Audiobook *p1 = Library;
     while (p1)
     {
@@ -64,7 +64,7 @@ void FILEWRITER()
     fclose(file);
 
     /*WRITING USERS*/
-    file = fopen("DATABASE/USERS.dat", "wb");
+    file = fopen("../DATABASE/USERS.dat", "wb");
     user *p2 = uList;
     while (p2)
     {
@@ -81,7 +81,7 @@ void FILEWRITER()
         book = p3->mybooks;
         short id = p3->uid;
         char buf[SIZE];
-        snprintf(buf, sizeof(buf), "DATABASE/%hu.dat", id);
+        snprintf(buf, sizeof(buf), "../DATABASE/%hu.dat", id);
         FILE *f = fopen(buf, "wb+");
 
         /*start writing*/
@@ -99,7 +99,7 @@ void FILEWRITER()
 void FILEREADER()
 {
     /*READING BOOKS*/
-    FILE *file = fopen("DATABASE/BOOKS.dat", "rb");
+    FILE *file = fopen("../DATABASE/BOOKS.dat", "rb");
     Audiobook *lib = NULL;
     Audiobook *p1 = NULL; // current pointer
     Audiobook temp;
@@ -122,7 +122,7 @@ void FILEREADER()
     Library = lib;
 
     /*READING USERS*/
-    file = fopen("DATABASE/USERS.dat", "rb");
+    file = fopen("../DATABASE/USERS.dat", "rb");
     user *users = NULL;
     user *p2 = NULL; // current pointer
     user node;
@@ -154,7 +154,7 @@ void FILEREADER()
         char buf[SIZE];
 
         /*start reading*/
-        snprintf(buf, sizeof(buf), "DATABASE/%hu.dat", id);
+        snprintf(buf, sizeof(buf), "../DATABASE/%hu.dat", id);
         FILE *f = fopen(buf, "rb");
         mybook node;
         while (fread(&node, sizeof(mybook), 1, file) == 1)
