@@ -1,0 +1,87 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Header */
+header {
+    background-image: url('hike.jpg');
+    height: 400px;
+    background-size: cover;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+
+
+header h1 {
+    padding-left: 100px;
+    margin: 0;
+    font-size: 30px;
+}
+
+nav {
+    font-size: x-large;
+    text-align: right;
+}
+
+nav a {
+    color: rgb(0, 0, 0);
+    margin: 0 15px;
+    text-decoration: none;
+}
+
+p.home{
+    margin: 50px;
+    margin-inline: 150px;
+}
+
+/* Body */
+
+.container {
+    display: flex;
+    height: 400px;
+    justify-content: center;
+    padding: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: larger;
+}
+
+.container a{
+    font-weight: bold;
+    color: rgb(46, 173, 192);
+    text-decoration: none;
+}
+
+
+
+.container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.container div{
+    padding: 20px;
+}
+
+/* Footer */
+footer {
+    margin-top: 100px;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+footer a {
+    color: #d4af37;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
