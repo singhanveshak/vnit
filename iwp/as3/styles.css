@@ -1,4 +1,7 @@
 body {
+    background: url('grad.png');
+    background-size: cover;
+    background-position: center top;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
@@ -7,29 +10,87 @@ body {
 
 /* Header */
 header {
-    background-image: url('flower.jpg');
-    height: 400px;
+    height: 150px;
     background-size: cover;
     color: rgb(255, 255, 255);
     padding: 20px;
     display: flex;
     justify-content: space-between;
-    /* align-items: center; */
 }
 
 
 header h1 {
     margin: 0;
-    font-size: 30px;
+    font-size: 50px;
 }
 
 nav {
-    font-size: x-large;
+    font-size: 13px;
+    font-weight: bold;
     text-align: right;
 }
+
+/*flex body*/
+.flex-container {
+    height: 400px;
+    display: flex;
+  }
+.flex-container > div {
+    height: 20%;
+    background-color: #f1f1f1;
+    margin: 10px;
+    padding: 20px;
+    font-size: 30px;
+  }
 
 nav a {
     color: rgb(255, 255, 255);
     margin: 0 15px;
     text-decoration: none;
+}
+
+/* Footer */
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+footer a {
+    color: #ceb0f5;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+
+table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    color: white;
+    font-size: larger;
+    text-decoration: none;
+}
+
+th, td {
+    padding: 8px;
+    text-align: center;
+    height: calc(100% / 8);
+    text-decoration: none;
+}
+
+th {
+    color: rgb(255, 255, 255);
+}
+
+
+td:hover {
+    background-color: #eeddf736;
 }
