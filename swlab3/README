@@ -1,0 +1,55 @@
+0. Install apache2, mysql, php
+------------------------------------------------------------------------
+1. create a MyFirstServer.conf file at /etc/apache2/sites-available/ and write this there:
+
+<VirtualHost *:80>
+        ServerName MySite      
+        DocumentRoot /var/www/MySite 
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+------------------------------------------------------------------------
+2. Create a folder /var/www/MySite and create index.html, info.php, todo.php files with the following content
+**index.html**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hello, World!</title>
+</head>
+<body>
+    <h1>Hello, World!</h1>
+    <p>Welcome to your first webpage.</p>
+</body>
+</html>
+-----------------------------------
+**info.php**
+<?php
+	phpinfo();
+?>
+-----------------------------------
+**todo.php**
+<?php
+$user = "Anveshak";
+$password = "password";
+$database = "MyDB";
+$table = "todo";
+
+try {
+    $db = new PDO("mysql:host=localhost;dbname=$database", $user, $password);
+    echo "<h2>TODO</h2><ol>";
+    
+    foreach ($db->query("SELECT content FROM $table") as $row) {
+        echo "<li>" . $row['content'] . "</li>";
+    }
+
+    echo "</ol>";
+} catch (PDOException $e) {
+    print "Error!: " . $e->getMessage() . "<br/>";
+    die();
+}
+?>
+------------------------------------------------------------------------
+3. Now you need to create a DATABASE on MySQL called MyDB and create a table in it called todo. 
+Also create a user 'Anveshak' with 'password' and GRANT ALL permissions of MyDB to him.
+------------------------------------------------------------------------
+4. Now go and access your website on http://localhost or access it using domain name http://MySite by mapping this name to 127.0.0.1 in /stc/hosts file
