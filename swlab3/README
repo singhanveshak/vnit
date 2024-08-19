@@ -52,4 +52,5 @@ try {
 3. Now you need to create a DATABASE on MySQL called MyDB and create a table in it called todo. 
 Also create a user 'Anveshak' with 'password' and GRANT ALL permissions of MyDB to him.
 ------------------------------------------------------------------------
-4. Now go and access your website on http://localhost or access it using domain name http://MySite by mapping this name to 127.0.0.1 in /stc/hosts file
+4. Now go and access your website on http://localhost or access it using domain name http://MySite by mapping this name to 127.0.0.1 in /stc/hosts file.
+You can stop hosting the site by disabling Apache Server "sudo systemctl stop apache2" and re-enable it by "sudo systemctl start apache2"
