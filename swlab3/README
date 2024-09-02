@@ -54,3 +54,43 @@ Also create a user 'Anveshak' with 'password' and GRANT ALL permissions of MyDB 
 ------------------------------------------------------------------------
 4. Now go and access your website on http://localhost or access it using domain name http://MySite by mapping this name to 127.0.0.1 in /stc/hosts file.
 You can stop hosting the site by disabling Apache Server "sudo systemctl stop apache2" and re-enable it by "sudo systemctl start apache2"
+------------------------------------------------------------------------
+5. TO set up java connection- 
+Make a file FirstApp.java with the following contents- 
+// Java Program to Retrieve Contents of a Table Using JDBC
+// connection
+
+// Showing linking of created database
+
+// Importing SQL libraries to create database
+import java.sql.*;
+
+public class FirstApp {
+
+	public static void main(String[] args)
+
+	{
+
+		try 
+		{
+			Connection con = DriverManager.getConnection(
+				"jdbc:mysql://localhost:3306/MyDB",
+				"user", "password");		//replace your own pass and user
+
+            Statement s=con.createStatement();
+            ResultSet rs=s.executeQuery("Select * from todo");
+            while(rs.next()){
+            System.out.println("ITEM: "+rs.getString("item_id")+" "+rs.getString("content"));
+            } 
+        }
+        catch(Exception e){
+        System.out.println(e.getMessage()); 
+	    }
+    }
+
+}
+-------------
+then go and download the jdbc connection .jar file from https://dev.mysql.com/downloads/connector/j/ and then extract and place the jar file in the samae dorectory as your app.
+Then compile it Up!
+$> javac FirstApp.java 
+$> java -cp .:mysql-connector-j-9.0.0.jar FirstApp
