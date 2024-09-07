@@ -1,0 +1,21 @@
+1.1.	FIFO, SJF have no difference in turnaround, response times
+1.2.	no difference
+1.3.	for l=100,200,300:   Average -- Response: 1.00  Turnaround 465.67 
+1.4.	when short jobs arrive early
+1.5.	for large time quantums, RR becomes SJF when all jobs have same length 
+1.6. 	decreases, behaves like FCFS/FIFO for large TQ
+
+
+---------------------------------------------------------
+
+
+2.1.	Avg  1: startTime n/a - response 4.00 - turnaround 10.00; job-length 10
+2.2.	When Boost time small OR in case of single job, it behaves like RR OR in case of single Queue and fixed TQ
+2.3.	mlfq.py -n 2 -Q 10,20 -A 1,2 -l 1,50,0:0,5,1 -S
+
+
+----------------------------------------------------------
+
+
+3.1.	Not unfair at all in the first case, and alaso not unfair with different random seeds in case of equal ticket allotments
+3.2.	unfairness increases beacuse it starts behaving like FCFS/FIFO when TQ increases
