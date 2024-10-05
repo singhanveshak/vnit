@@ -1,0 +1,78 @@
+Meet to decide Club members
+Monday, Sep 23  •  8:00 – 9:00 PM
+Google Meet joining info
+Video call link: https://meet.google.com/qis-mbnz-hpn
+
+--------------------------------------------------------------
+
+Google form created: https://forms.gle/myTjG4eqPoLhnHNG8
+
+--------------------------------------------------------------
+
+chart and github pages with live interactive iframe: https://singhanveshak.github.io/sw3/ 
+
+--------------------------------------------------------------
+
+openmaps embed with API: https://singhanveshak.github.io/sw3-map/
+
+--------------------------------------------------------------
+
+import folium
+from geopy.geocoders import Photon
+import osmnx as ox
+import networkx as nx
+
+# Step 1: Initialize a map centered around a specific location (VNIT Nagpur in this case)
+vnit_coords = [21.1236, 79.0510]  # VNIT Nagpur coordinates
+my_map = folium.Map(location=vnit_coords, zoom_start=15)
+
+# Step 2: Add a marker at VNIT Nagpur
+folium.Marker(
+    location=vnit_coords, 
+    popup="VNIT Nagpur",
+    icon=folium.Icon(icon='cloud')
+).add_to(my_map)
+
+# Step 3: Geocode a location using Photon
+geolocator = Photon()
+location = geolocator.geocode("Gateway of India, Mumbai")
+
+if location:
+    print(f"Gateway of India Coordinates: {location.latitude}, {location.longitude}")
+
+    # Step 4: Add another marker at the geocoded location
+    gateway_coords = [location.latitude, location.longitude]
+    folium.Marker(
+        location=gateway_coords,
+        popup="Gateway of India, Mumbai",
+        icon=folium.Icon(color='green')
+    ).add_to(my_map)
+
+    # Step 5: Draw a route between VNIT Nagpur and Gateway of India
+    # Limit the area to Nagpur
+    G = ox.graph_from_place('Nagpur, India', network_type='drive')
+
+    # Find the nearest nodes in the graph to VNIT and Gateway coordinates
+    orig_node = ox.distance.nearest_nodes(G, vnit_coords[1], vnit_coords[0])
+    dest_node = ox.distance.nearest_nodes(G, gateway_coords[1], gateway_coords[0])
+
+    # Calculate the shortest path between VNIT and Gateway of India
+    route = nx.shortest_path(G, orig_node, dest_node, weight='length')
+
+    # Get the coordinates of the route for visualization
+    route_coords = [(G.nodes[node]['y'], G.nodes[node]['x']) for node in route]
+
+    # Add the route to the map
+    folium.PolyLine(route_coords, color="blue", weight=2.5, opacity=1).add_to(my_map)
+
+    # Step 6: Save the map as an HTML file
+    my_map.save("map.html")
+    print("Map saved as 'map.html'.")
+
+else:
+    print("Location not found.")
+
+# generates a map.html file
+sudo python maps.py 2>/dev/null
+
+---------------------------------------------------------
