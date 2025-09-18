@@ -144,40 +144,70 @@ if __name__ == "__main__":
     for _ in range(N):
         _ = group.hash(b"test", ZR)
     T_H = (time.time() - t0) / N
-
-    print(f"T_SM = {T_SM}\nT_PA = {T_PA}\nT_H = {T_H}" )
+    print("=================================================")
+    print("\tCOMMPUTATION COST COMPARISON")
+    print("=================================================")
+    print(f"\tT_SM = {T_SM}\n\tT_PA = {T_PA}\n\tT_H = {T_H}" )
     
-    # Registration cost per entity
-    #C_reg = 4*T_SM + 1*T_PA + 2*T_H
-
-    # Authentication cost per entity
-    #C_auth_entity = 4*T_SM + 2*T_PA + 3*T_H
-
-    # Authentication total (two entities)
-    #C_auth_total = 2 * C_auth_entity
-    #print("=================================================")
-    #print(f"Registration (per entity): {C_reg*1000:.3f} ms")
-    #print(f"Authentication (per entity): {C_auth_entity*1000:.3f} ms")
-    #print(f"Authentication total: {C_auth_total*1000:.3f} ms")
-    
-    # Measured times from your simulation
-    # T_SM, T_PA, T_H are already calculated
 
     # Define the computational cost formulas for each protocol (per entity)
     protocol_costs = {
-    "LSCAP-IIoT": lambda T_SM, T_PA, T_H: 1*T_SM + 4*T_PA + 1*T_H,
-    "Chen [24]": lambda T_SM, T_PA, T_H: 6*T_SM + 1*T_PA + 3*T_H,
-    "Saeed [12]": lambda T_SM, T_PA, T_H: 12*T_SM + 12*T_PA + 7*T_H,
-    "Zhang [16]": lambda T_SM, T_PA, T_H: 4*T_SM + 2*T_PA + 6*T_H,
-    "Wang [23]": lambda T_SM, T_PA, T_H: 4*T_SM + 2*T_PA + 2*T_H,
-    "Cui [14]": lambda T_SM, T_PA, T_H: 4*T_SM + 3*T_PA + 3*T_H,
-    "Deng [15]": lambda T_SM, T_PA, T_H: 3*T_SM + 5*T_H,
-    "Nkurunziza [22]": lambda T_SM, T_PA, T_H: 4*T_SM + 2*T_PA + 3*T_H,
-    "OURS" : lambda T_SM, T_PA, T_H: 4*T_SM + 2*T_PA + 3*T_H 
+    "LSCAP-IIoT": lambda T_SM, T_PA, T_H: 8*T_SM + 4*T_PA + 6*T_H,
+    "Saeed [12]": lambda T_SM, T_PA, T_H: 12*T_SM + 2*T_PA + 6*T_H,
+    "Zhang [16]": lambda T_SM, T_PA, T_H: 24*T_SM + 24*T_PA + 14*T_H,
+    "Wang [23]": lambda T_SM, T_PA, T_H: 10*T_SM + 4*T_PA + 12*T_H,
+    "Cui [14]": lambda T_SM, T_PA, T_H: 8*T_SM + 4*T_PA + 4*T_H,
+    "Deng [15]": lambda T_SM, T_PA, T_H: 8*T_SM + 6*T_H + 6*T_PA,
+    "Nkurunziza [22]": lambda T_SM, T_PA, T_H: 10*T_SM + 2*T_PA + 11*T_H,
+    "OURS" : lambda T_SM, T_PA, T_H: 8*T_SM + 4*T_PA + 6*T_H 
     }
     print("=================================================")
     # Compute the cost in milliseconds per entity
     for name, formula in protocol_costs.items():
         cost_ms = formula(T_SM, T_PA, T_H) * 1000
-        print(f"{name} cost per entity: {cost_ms:.3f} ms")
+        print(f"\t{name} cost per entity: {cost_ms:.3f} ms")
+    # communication_costs.py
+    # Run in plain Python (no Charm required)
+
+    # 1) set primitive sizes (bits) — use paper values or replace with measured sizes
+    ID = 32    # |ID|
+    G  = 160   # size of G element (lightweight ECC)
+    G1 = 512   # size of pairing-group element (pairing-based)
+    Zq = 160   # size of scalar in Z_q*
+    tr = 32    # timestamp/nonce
+    
+    # 2) define per-protocol message formulas
+    # Each entry: (sent_by_device_bits, sent_by_server_bits)
+    # where values represent the message composition described in the paper
+    comm_formulas = {
+        "LSCAP-IIoT (Proposed)": ( ID + 3*G + tr,                  # device -> server
+                                   ID + 3*G + tr ),                # server -> device (symmetric)
+        "Saeed [12]":            ( ID + 2*G + tr,                  # adjust according to paper
+                                ID + 2*G + tr ),
+        "Zhang [16]":            ( ID + 2*G + tr,
+                                ID + 2*G + tr ),
+        "Wang [23]":             ( ID + 3*G + tr,
+                                ID + 2*G + tr ),
+        "Cui [14]":              ( ID + 2*G + tr,
+                                ID + 2*G + tr ),
+        "Deng [15]":             ( ID + 3*G + tr,
+                                ID + 3*G + tr ),
+        "Nkurunziza [22]":       ( ID + 2*G + tr,
+                                ID + 2*G + tr ),
+        "Chen et al. [24]":      ( ID + 3*G1 + tr,                 # device -> server (pairing-based)
+                                ID + 2*G1 + Zq ),               # server -> device
+        "Shao et al. [17]":      ( ID + 3*G1 + tr,
+                                ID + 3*G1 + tr )
+    }
+    
+    # 3) evaluate and print results (per-direction and total)
     print("=================================================")
+    print("\tCOMMUNICATION COST COMPARISON")
+    print("=================================================")
+    for name, (dev_bits, srv_bits) in comm_formulas.items():
+        total_bits = dev_bits + srv_bits
+        print(f"\t{name}:")
+        print(f"\t  - Device -> Server: {dev_bits} bits ({dev_bits/8:.1f} bytes)")
+        print(f"\t  - Server -> Device: {srv_bits} bits ({srv_bits/8:.1f} bytes)")
+        print(f"\t  - Total (round-trip): {total_bits} bits ({total_bits/8:.1f} bytes)\n")
+    
