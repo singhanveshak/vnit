@@ -166,7 +166,8 @@ if __name__ == "__main__":
     for name, formula in protocol_costs.items():
         cost_ms = formula(T_SM, T_PA, T_H) * 1000
         print(f"\t{name} cost per entity: {cost_ms:.3f} ms")
-    # communication_costs.py
+
+
     # Run in plain Python (no Charm required)
 
     # 1) set primitive sizes (bits) — use paper values or replace with measured sizes
@@ -182,22 +183,20 @@ if __name__ == "__main__":
     comm_formulas = {
         "LSCAP-IIoT (Proposed)": ( ID + 3*G + tr,                  # device -> server
                                    ID + 3*G + tr ),                # server -> device (symmetric)
-        "Saeed [12]":            ( ID + 2*G + tr,                  # adjust according to paper
-                                ID + 2*G + tr ),
-        "Zhang [16]":            ( ID + 2*G + tr,
-                                ID + 2*G + tr ),
-        "Wang [23]":             ( ID + 3*G + tr,
-                                ID + 2*G + tr ),
-        "Cui [14]":              ( ID + 2*G + tr,
-                                ID + 2*G + tr ),
-        "Deng [15]":             ( ID + 3*G + tr,
-                                ID + 3*G + tr ),
+        "Saeed [12]":            ( ID + 2*G + 2*Zq +  tr,                  
+                                ID + 3*G + 2*Zq + tr ),
+        "Zhang [16]":            ( ID + 3*G + 3*Zq + tr,
+                                ID + 3*G + 3*Zq + tr),
+        "Wang [23]":             ( ID + 2*G + 4*Zq + tr,
+                                ID + 3*G + 1*Zq + tr),
+        "Cui [14]":              ( ID + 2*G,
+                                ID + 2*G  ),
+        "Deng [15]":             ( ID + 3*G ,
+                                ID + 3*G  ),
         "Nkurunziza [22]":       ( ID + 2*G + tr,
                                 ID + 2*G + tr ),
         "Chen et al. [24]":      ( ID + 3*G1 + tr,                 # device -> server (pairing-based)
                                 ID + 2*G1 + Zq ),               # server -> device
-        "Shao et al. [17]":      ( ID + 3*G1 + tr,
-                                ID + 3*G1 + tr )
     }
     
     # 3) evaluate and print results (per-direction and total)
