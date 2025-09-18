@@ -1,6 +1,5 @@
 #Runs on Charm Cypto 
 #This is an implementation of CL-AKA protocol given by Xia, Zhang https://link.springer.com/article/10.1007/s12243-025-01108-x
-
 from charm.toolbox.pairinggroup import PairingGroup, ZR, G1
 import hashlib
 import secrets
@@ -149,14 +148,36 @@ if __name__ == "__main__":
     print(f"T_SM = {T_SM}\nT_PA = {T_PA}\nT_H = {T_H}" )
     
     # Registration cost per entity
-    C_reg = 4*T_SM + 1*T_PA + 2*T_H
+    #C_reg = 4*T_SM + 1*T_PA + 2*T_H
 
     # Authentication cost per entity
-    C_auth_entity = 4*T_SM + 2*T_PA + 3*T_H
+    #C_auth_entity = 4*T_SM + 2*T_PA + 3*T_H
 
     # Authentication total (two entities)
-    C_auth_total = 2 * C_auth_entity
+    #C_auth_total = 2 * C_auth_entity
+    #print("=================================================")
+    #print(f"Registration (per entity): {C_reg*1000:.3f} ms")
+    #print(f"Authentication (per entity): {C_auth_entity*1000:.3f} ms")
+    #print(f"Authentication total: {C_auth_total*1000:.3f} ms")
+    
+    # Measured times from your simulation
+    # T_SM, T_PA, T_H are already calculated
 
-    print(f"Registration (per entity): {C_reg*1000:.3f} ms")
-    print(f"Authentication (per entity): {C_auth_entity*1000:.3f} ms")
-    print(f"Authentication total: {C_auth_total*1000:.3f} ms")
+    # Define the computational cost formulas for each protocol (per entity)
+    protocol_costs = {
+    "LSCAP-IIoT": lambda T_SM, T_PA, T_H: 1*T_SM + 4*T_PA + 1*T_H,
+    "Chen [24]": lambda T_SM, T_PA, T_H: 6*T_SM + 1*T_PA + 3*T_H,
+    "Saeed [12]": lambda T_SM, T_PA, T_H: 12*T_SM + 12*T_PA + 7*T_H,
+    "Zhang [16]": lambda T_SM, T_PA, T_H: 4*T_SM + 2*T_PA + 6*T_H,
+    "Wang [23]": lambda T_SM, T_PA, T_H: 4*T_SM + 2*T_PA + 2*T_H,
+    "Cui [14]": lambda T_SM, T_PA, T_H: 4*T_SM + 3*T_PA + 3*T_H,
+    "Deng [15]": lambda T_SM, T_PA, T_H: 3*T_SM + 5*T_H,
+    "Nkurunziza [22]": lambda T_SM, T_PA, T_H: 4*T_SM + 2*T_PA + 3*T_H,
+    "OURS" : lambda T_SM, T_PA, T_H: 4*T_SM + 2*T_PA + 3*T_H 
+    }
+    print("=================================================")
+    # Compute the cost in milliseconds per entity
+    for name, formula in protocol_costs.items():
+        cost_ms = formula(T_SM, T_PA, T_H) * 1000
+        print(f"{name} cost per entity: {cost_ms:.3f} ms")
+    print("=================================================")
